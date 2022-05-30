@@ -1,46 +1,72 @@
-import React, { Component } from "react";
-import Pages from "./components/Pages";
-import axios from "axios";
-import "./App.css";
-import Pagination from "./components/Pagination";
+import { useState } from "react";
+import "./App.css"
+const App = () => {
+  const [inputValue, setInputValue] = useState({
+    first_name: "",
+    last_name: "",
+    email: ""
+  })
 
-class App extends Component {
-  state = {
-    posts: [],
-    loading: false,
-    currentPage: 1,
-    postPerPage: 9,
-  };
+  // state to manage manage the submit 
+  const [submit, setSubmit] = useState(false)
+  const [valid, setValid] = useState(false)
 
-  async componentDidMount() {
-    this.setState({ loading: true });
-    const res = await axios.get("http://api.enye.tech/v1/challenge/records");
-    this.setState({ posts: res.data.records.profiles });
-    this.setState({ loading: false });
-    console.log(res.data.records.profiles);
+  // handleChange function definiton
+  const handleFirstNameChange = (e) => {
+    setInputValue({...inputValue, first_name: e.target.value})
+    // setSubmit(false)
+  }
+  const handleLastNameChange = (e) => {
+    setInputValue({...inputValue, last_name: e.target.value})
+    // setSubmit(false)
+  }
+  const handleEmailChange = (e) => {
+    setInputValue({...inputValue, email: e.target.value})
+    // setSubmit(false)
   }
 
-  paginate = (number) => {
-    this.setState({ currentPage: number });
-  };
+    let newValid = valid;
 
-  render() {
-    // Pagination logic
-    const lastPost = this.state.currentPage * this.state.postPerPage;
-    const firstPost = lastPost - this.state.postPerPage;
-    const currentPost = this.state.posts.slice(firstPost, lastPost);
-    return (
-      <div className="container">
-        <h1 className="h1 text-center my-3">My Profiles</h1>
-        <Pages posts={currentPost} loading={this.state.loading} />
-        <Pagination
-          totalPost={this.state.posts.length}
-          postPerPage={this.state.postPerPage}
-          paginate={this.paginate}
-        />
-      </div>
-    );
+
+  // handleSUbmit function definiton
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if(inputValue.first_name && inputValue.last_name && inputValue.email){
+      setValid(true)
+      newValid = true
+    }
+    setSubmit(true)
+    //  console.log(submit, valid, newValid);
+       if(newValid){
+      setInputValue({
+        first_name: "",
+        last_name: "",
+        email: ""
+      })
+       newValid = false
+    }
   }
+
+  return (
+    <div className="appContainer">
+        
+        <form className="formContainer" onSubmit={handleSubmit}>
+          {
+            submit && valid ? <div className="success">Your registration was sucessful!!</div> : null
+          }
+          {/* first Name */}
+          <input onChange={handleFirstNameChange} value={inputValue.first_name} className="inputField" type="text" placeholder="First Name" />
+          {submit && !newValid && !inputValue.first_name ? <span>This field cannot be left empty</span> : null }
+          {/*  last name */}
+          <input onChange={handleLastNameChange} type="text" value={inputValue.last_name}className="inputField" placeholder="Last Name" />
+          {submit &&!newValid && !inputValue.last_name ? <span>This field cannot be left empty</span> : null }
+          {/* email */}
+          <input onChange={handleEmailChange} type="text" value={inputValue.email}className="inputField" placeholder="Email" />
+          {submit && !newValid && !inputValue.email ? <span>This field cannot be left empty</span> : null }
+          <button className="btn" type="submit">Register</button>
+        </form>
+    </div>
+  )
 }
 
 export default App;
