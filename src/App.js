@@ -6,14 +6,12 @@ const App = () => {
 	const [currentQuestion, setCurrentQuestion] = useState(0);
 	const [done, setDone] = useState(false);
 	const [score, setScore] = useState(0);
-	// const [prevScore, setPrevScore] = useState(0)
 
 	const handleBtnClick = (isCorrect) => {
 		let newScore = score + 1;
 		if (isCorrect) {
 			setScore(newScore);
 		}
-		// console.log(newScore, score);
 		let newQuestion = currentQuestion + 1;
 		if (newQuestion < questions.length) {
 			setCurrentQuestion(newQuestion);
