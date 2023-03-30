@@ -5,7 +5,7 @@ require("dotenv").config();
 const uri = process.env.CONNECTION_STRING;
 const port = process.env.PORT;
 
-const connectToDB = require("./db");
+const connectToDB = require("./db/connect");
 
 const start = async () => {
 	try {
