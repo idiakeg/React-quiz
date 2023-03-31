@@ -9,6 +9,8 @@ const data = require("./data");
 const start = async () => {
 	await connectToDB(uri);
 	console.log("connected successfully!!");
+	await questionModel.deleteMany();
+	console.log("deleted existing questions");
 	await questionModel.create(data);
 	console.log("successfully added questions to the DB");
 };
