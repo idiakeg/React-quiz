@@ -10,6 +10,6 @@ const questionSchema = new Schema({
 	],
 });
 
-const questionModel = new model("quiz", questionSchema);
+const questionModel = model("quiz", questionSchema);
 
 module.exports = questionModel;
