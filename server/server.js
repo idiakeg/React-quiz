@@ -7,6 +7,10 @@ const port = process.env.PORT;
 
 const connectToDB = require("./db/connect");
 
+const getQuestions = require("./controller/controllers");
+
+app.get("/", getQuestions);
+
 const start = async () => {
 	try {
 		await connectToDB(uri);
